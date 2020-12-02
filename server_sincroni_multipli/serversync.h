@@ -6,13 +6,21 @@
 #include <sys/msg.h>
 
 /* TBD: Definire una struct per i messaggi "REQUEST TO SEND" */
+typedef struct {
+    long type;
+} request_to_send;
 
 /* TBD: Definire una struct per i messaggi "OK TO SEND" */
+typedef struct{
+    long type;
+    int id_coda;
+}ok_to_send;
+
 
 typedef struct {
     long type;
     int val;
-} messaggio;
+}messaggio;
 
 void receive_sinc(int msg_id, int ok_id, int req_id, messaggio * msg);
 void send_sinc(int ok_id, int req_id, messaggio * msg);
