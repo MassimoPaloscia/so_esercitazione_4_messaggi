@@ -13,6 +13,13 @@
 		il PID del mittente.
  */
 
+struct mess{
+
+    long tipo;
+
+    pid_t PID;
+};
+
 
 void Client(int msg_id_balancer);
 void Balancer(int msg_id_balancer, int msg_id_server[]);

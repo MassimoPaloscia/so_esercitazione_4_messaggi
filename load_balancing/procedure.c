@@ -17,9 +17,15 @@ void Client(int msg_id_balancer) {
 
 		/* TBD: Inviare il messaggio del client */
 
+		struct mess m;
+
+		m.tipo = 1;
+
+		m.PID = getpid();
+
 		printf("Client %d: invio messaggio numero %d\n", getpid(), i);
 
-		ret = /* TBD */
+		ret = msgsnd(msg_id_balancer, &m, sizeof(struct mess) - sizeof(long), 0); /* TBD */
 
 		if(ret < 0) {
 
@@ -51,7 +57,9 @@ void Balancer(int msg_id_balancer, int msg_id_server[]) {
 
 		/* TBD: Ricevere un messaggio dai client */
 
-		ret = /* TBD */
+		struct mess m;
+
+		ret = msgrcv(msg_id_balancer, &m, sizeof(struct mess) - sizeof(long), 0, 0);/* TBD */
 
 		if(ret < 0) {
 
@@ -61,13 +69,15 @@ void Balancer(int msg_id_balancer, int msg_id_server[]) {
 
 
 
-		printf("Balancer: ricezione messaggio dal processo %d, invio al server %d\n", /* TBD */, server+1);
+		printf("Balancer: ricezione messaggio dal processo %d, invio al server %d\n", m.PID, server+1);
 
 
 
-		/* TBD: Inviare il messaggio all'i-esimo server */
+	
 
-		ret = /* TBD */
+		ret = msgsnd(msg_id_server[server], &m, sizeof(struct mess) - sizeof(long), 0); /* TBD */
+
+		
 
 		if(ret < 0) {
 
@@ -106,9 +116,11 @@ void Server(int msg_id_server) {
 
 		/* TBD: Ricevere un messaggio dal load balancer */
 
-		ret = /* TBD */
+		struct mess m;
 
-		printf("Server %d: ricezione messaggio numero %d dal processo %d\n", getpid(), i, /* TBD */);
+		ret = msgrcv(msg_id_server, &m, sizeof(struct mess) - sizeof(long), 0, 0);/* TBD */
+
+		printf("Server %d: ricezione messaggio numero %d dal processo %d\n", getpid(), i, m.PID);
 
 		if(ret < 0) {
 
